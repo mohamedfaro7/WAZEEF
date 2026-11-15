@@ -127,18 +127,37 @@
     @keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
 
     /* 3D stage */
-    /* ====== HERO: road trip scene ====== */
-    .stage{animation:fadein 1s .4s both}
+    /* ====== HERO: stage (3D floating cards + parallax) ====== */
+    .stage{position:relative;height:520px;perspective:1400px;animation:fadein 1s .5s both;filter:drop-shadow(0 40px 80px rgba(0,0,0,.4))}
     @keyframes fadein{from{opacity:0}to{opacity:1}}
-    .road-stage{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center}
-    .road-svg{width:100%;max-width:440px;height:auto;filter:drop-shadow(0 34px 60px rgba(0,0,0,.55)) drop-shadow(0 0 50px rgba(212,168,83,.07))}
-    .road-center{animation:centerMarch 1.35s linear infinite}
-    @keyframes centerMarch{to{stroke-dashoffset:-28}}
-    .ms text{user-select:none}
-    .road-caption{text-align:center;margin-top:10px;padding:0 10px}
-    .road-caption b{display:block;font-size:21px;font-weight:900;letter-spacing:.2px;background:linear-gradient(100deg,#fbeec3 0%,#f0d78c 30%,#d4a853 62%,#8a6508 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-    .road-caption span{color:var(--mut);font-size:13.5px;display:block;margin-top:6px;line-height:1.8}
+    .stage .float{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .18s ease-out}
+    .jcard{position:absolute;width:270px;padding:20px;border-radius:20px;background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:1px solid var(--line2);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:0 24px 64px rgba(0,0,0,.45),0 0 48px rgba(212,168,83,.08),inset 0 1px 0 rgba(255,255,255,.1);transform-style:preserve-3d;transition:box-shadow .5s}
+    .jcard:hover{box-shadow:0 32px 80px rgba(0,0,0,.55),0 0 64px rgba(212,168,83,.18),inset 0 1px 0 rgba(255,255,255,.15)}
+    .jcard .ico{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:22px;background:linear-gradient(135deg,rgba(212,168,83,.28),rgba(212,168,83,.08));border:1px solid var(--line2);margin-bottom:12px;transition:all .5s cubic-bezier(.16,.84,.3,1);box-shadow:0 8px 32px rgba(212,168,83,.18)}
+    .jcard:hover .ico{transform:translateZ(30px) scale(1.08) rotateY(6deg);box-shadow:0 14px 40px rgba(212,168,83,.3)}
+    .jcard h4{font-size:17.5px;font-weight:800;margin-bottom:3px}
+    .jcard .co{font-size:13.5px;color:var(--mut);margin-bottom:12px}
+    .jcard .tags{display:flex;gap:7px;flex-wrap:wrap}
+    .jcard .tag{font-size:11.5px;padding:4px 11px;border-radius:999px;background:rgba(212,168,83,.14);color:var(--gold3);font-weight:700;border:1px solid rgba(212,168,83,.25)}
+    .jcard.c1{top:6%;right:4%;transform:translateZ(70px) rotateY(-14deg) rotateX(6deg);animation:bob 6s ease-in-out infinite}
+    .jcard.c2{top:34%;left:2%;transform:translateZ(120px) rotateY(10deg) rotateX(-5deg);animation:bob 7s -2s ease-in-out infinite}
+    .jcard.c3{bottom:4%;right:16%;transform:translateZ(40px) rotateY(-6deg) rotateX(10deg);animation:bob 6.5s -4s ease-in-out infinite}
+    .jcard.c4{top:12%;left:14%;transform:translateZ(10px) rotateY(16deg);animation:bob 7.5s -1s ease-in-out infinite;width:230px;opacity:.92}
+    @keyframes bob{50%{margin-top:-16px}}
+    @keyframes fadeinCard{from{opacity:0;transform:translateY(60px) scale(.92)}to{opacity:1;transform:none}}
+    .stage .jcard{will-change:transform,margin-top}
+    .ring{position:absolute;inset:8% 6%;border:1px dashed rgba(212,168,83,.28);border-radius:50%;animation:spin 40s linear infinite}
+    .ring:after{content:"";position:absolute;top:-7px;left:50%;width:14px;height:14px;border-radius:50%;background:var(--gold3);box-shadow:0 0 18px var(--gold)}
     @keyframes spin{to{transform:rotate(360deg)}}
+    .glow-center{position:absolute;top:50%;left:50%;width:280px;height:280px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(212,168,83,.3),transparent 65%);filter:blur(30px)}
+    @keyframes cardIn1{from{opacity:0;transform:translateY(60px) rotateY(-24deg) scale(.9)}to{opacity:1;transform:translateZ(70px) rotateY(-14deg) rotateX(6deg)}}
+    @keyframes cardIn2{from{opacity:0;transform:translateY(60px) rotateY(24deg) scale(.9)}to{opacity:1;transform:translateZ(120px) rotateY(10deg) rotateX(-5deg)}}
+    @keyframes cardIn3{from{opacity:0;transform:translateY(60px) rotateY(-16deg) scale(.9)}to{opacity:1;transform:translateZ(40px) rotateY(-6deg) rotateX(10deg)}}
+    @keyframes cardIn4{from{opacity:0;transform:translateY(60px) rotateY(24deg) scale(.9)}to{opacity:.92;transform:translateZ(10px) rotateY(16deg)}}
+    .jcard.c1{animation:cardIn1 .95s cubic-bezier(.16,.84,.3,1) .5s both, bob 6s 1.55s ease-in-out infinite}
+    .jcard.c2{animation:cardIn2 .95s cubic-bezier(.16,.84,.3,1) .7s both, bob 7s 1.75s ease-in-out infinite}
+    .jcard.c3{animation:cardIn3 .95s cubic-bezier(.16,.84,.3,1) .9s both, bob 6.5s 1.95s ease-in-out infinite}
+    .jcard.c4{animation:cardIn4 .95s cubic-bezier(.16,.84,.3,1) 1.1s both, bob 7.5s 2.15s ease-in-out infinite}
 
     /* ====== sections ====== */
     section{position:relative;padding:96px 0}
@@ -250,7 +269,7 @@
     @media (max-width:1020px){
       .cats,.feats{grid-template-columns:repeat(2,1fr)}
       .hero .grid2{grid-template-columns:1fr;gap:8px}
-      .road-stage{order:-1;margin:-6px 0 0;transform:scale(.94)}
+      .stage{height:430px;order:-1;transform:scale(.86);margin:-20px 0 -40px}
       .band .inner{grid-template-columns:1fr}
       .steps{grid-template-columns:1fr;gap:34px}.steps:before{display:none}
       .fgrid{grid-template-columns:1fr}
@@ -262,15 +281,15 @@
       .slots{grid-template-columns:repeat(2,1fr)}
       section{padding:70px 0}
       .band{padding:34px 22px}
-      .road-stage{margin:0;transform:none}
-      .road-svg{max-width:310px}
-      .road-caption b{font-size:17px}
+      .stage{height:390px;transform:scale(.72);margin:-40px -60px -80px}
+      .jcard{width:235px}
       .hero{padding-top:110px}
       .trust{gap:16px}
     }
     /* icons (SVG) */
     .ico svg,.ic svg{width:100%;height:100%;display:block}
     .ico svg{stroke:var(--gold3);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+    .jcard .ico{width:46px;height:46px;padding:10px}
     .cat .ico{width:64px;height:64px;padding:16px}
     .feat .ico{width:52px;height:52px;padding:12px;border-radius:15px;background:linear-gradient(135deg,rgba(212,168,83,.2),rgba(212,168,83,.05));border:1px solid var(--line2);margin-bottom:14px}
     .feat .ico svg{stroke:var(--gold3);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
@@ -318,9 +337,6 @@
 
     /* Section headings gradient */
     .sec-head h2{background:linear-gradient(135deg,var(--txt),var(--gold3) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-
-    /* Hero stage deeper shadow */
-    .road-stage .ms{filter:drop-shadow(0 6px 14px rgba(0,0,0,.5))}
 
     /* CTA button enhanced shine */
     .btn-gold{position:relative;overflow:hidden}
@@ -451,113 +467,38 @@
       </div>
     </div>
 
-    <div class="stage road-stage" id="stage">
-    <svg class="road-svg" viewBox="0 0 440 480" role="img" aria-label="خط الرحلة من التسجيل لأول يوم شغل">
-      <defs>
-        <radialGradient id="rg" cx="50%" cy="88%" r="65%">
-          <stop offset="0%" stop-color="#d4a853" stop-opacity=".32"/>
-          <stop offset="100%" stop-color="#d4a853" stop-opacity="0"/>
-        </radialGradient>
-        <linearGradient id="goldg" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#f6e3a8"/>
-          <stop offset=".42" stop-color="#d4a853"/>
-          <stop offset="1" stop-color="#8a6508"/>
-        </linearGradient>
-        <linearGradient id="goldBody" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#fbeec3"/>
-          <stop offset=".35" stop-color="#e8c26a"/>
-          <stop offset=".8" stop-color="#a87c1e"/>
-          <stop offset="1" stop-color="#6b4f0d"/>
-        </linearGradient>
-      </defs>
-      <ellipse cx="215" cy="420" rx="195" ry="46" fill="url(#rg)"/>
-
-      <!-- sparkles -->
-      <g fill="#f0d78c">
-        <path d="M66 84l3.1 7.6 7.6 3.1-7.6 3.1-3.1 7.6-3.1-7.6-7.6-3.1 7.6-3.1z" opacity=".85"/>
-        <path d="M386 258l2.3 5.6 5.6 2.3-5.6 2.3-2.3 5.6-2.3-5.6-5.6-2.3 5.6-2.3z" opacity=".55"/>
-        <circle cx="360" cy="140" r="2" opacity=".7"/><circle cx="84" cy="208" r="2" opacity=".7"/><circle cx="316" cy="330" r="1.7" opacity=".6"/>
-      </g>
-
-      <!-- road (outer border, asphalt, dashed center line) -->
-      <path d="M 96 428 C 58 348, 196 336, 238 268 C 278 202, 172 176, 268 126 C 330 92, 386 96, 390 46" stroke="#26262f" stroke-width="54" fill="none" stroke-linecap="round" opacity=".95"/>
-      <path d="M 96 428 C 58 348, 196 336, 238 268 C 278 202, 172 176, 268 126 C 330 92, 386 96, 390 46" stroke="#13131b" stroke-width="44" fill="none" stroke-linecap="round"/>
-      <path class="road-center" d="M 96 428 C 58 348, 196 336, 238 268 C 278 202, 172 176, 268 126 C 330 92, 386 96, 390 46" stroke="url(#goldg)" stroke-width="3.1" fill="none" stroke-linecap="round" stroke-dasharray="13 15"/>
-
-      <!-- car traveling the road -->
-      <g class="car-g">
-        <animateMotion dur="12s" repeatCount="indefinite" rotate="auto" calcMode="linear" keyPoints="0;1;1" keyTimes="0;0.72;1" path="M 96 428 C 58 348, 196 336, 238 268 C 278 202, 172 176, 268 126 C 330 92, 386 96, 390 46"/>
-        <g transform="translate(0,-2) scale(1.05)">
-          <path d="M -24 1.5 L -21 -3.5 L -14 -9.5 Q -8 -13.5 2 -13.5 L 12 -12.5 L 20 -4 L 22.5 -3 L 22 1 Z" fill="url(#goldBody)" stroke="rgba(0,0,0,.35)" stroke-width=".7"/>
-          <path d="M -14 -9.5 L -11.5 -5.5 L 8 -5.5 L 14.5 -9 Z" fill="#1c1a16" opacity=".92"/>
-          <path d="M -10 -12 Q 0 -13 10 -11.2" stroke="#fff6d6" stroke-width="1.1" opacity=".65" fill="none" stroke-linecap="round"/>
-          <line x1="-2" y1="-13" x2="-2" y2="-5.5" stroke="rgba(0,0,0,.3)" stroke-width=".8"/>
-          <circle cx="-13.5" cy="1.6" r="4.6" fill="#0b0b10" stroke="#d4a853" stroke-width="1.6"/>
-          <circle cx="12" cy="1.6" r="4.6" fill="#0b0b10" stroke="#d4a853" stroke-width="1.6"/>
-          <circle cx="-13.5" cy="1.6" r="1.3" fill="#f0d78c"/>
-          <circle cx="12" cy="1.6" r="1.3" fill="#f0d78c"/>
-          <path d="M 23.5 -1.6 L 30 -1 Q 33 -0.5 30 .6 L 23.5 .2 Z" fill="#fef9c3" opacity=".95"/>
-        </g>
-      </g>
-
-      <!-- milestone 1 — سجّل -->
-      <g class="ms" transform="translate(96,428)">
-        <circle r="12.5" fill="#d4a853" opacity=".22"/>
-        <circle r="8" fill="#d4a853"/>
-        <path d="M -3.4 0.2 L -1.2 2.4 L 3.8 -3" stroke="#171204" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <g transform="translate(14,4)">
-          <rect x="0" y="-11" rx="7" ry="7" width="52" height="22" fill="#14141c" stroke="rgba(212,168,83,.4)"/>
-          <text x="26" y="4.5" text-anchor="middle" font-family="Tajawal,sans-serif" font-size="13" font-weight="800" fill="#f0d78c">سجّل</text>
-        </g>
-      </g>
-      <!-- milestone 2 — سجّل صوتك -->
-      <g class="ms" transform="translate(193,310)">
-        <circle r="12.5" fill="#d4a853" opacity=".22"/>
-        <circle r="8" fill="#d4a853"/>
-        <path d="M -3.4 0.2 L -1.2 2.4 L 3.8 -3" stroke="#171204" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <g transform="translate(-14,4)">
-          <rect x="-86" y="-11" rx="7" ry="7" width="86" height="22" fill="#14141c" stroke="rgba(212,168,83,.4)"/>
-          <text x="-43" y="4.5" text-anchor="middle" font-family="Tajawal,sans-serif" font-size="13" font-weight="800" fill="#f0d78c">سجّل صوتك</text>
-        </g>
-      </g>
-      <!-- milestone 3 — المراجعة -->
-      <g class="ms" transform="translate(232,191)">
-        <circle r="12.5" fill="#d4a853" opacity=".22"/>
-        <circle r="8" fill="#d4a853"/>
-        <path d="M -3.4 0.2 L -1.2 2.4 L 3.8 -3" stroke="#171204" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <g transform="translate(14,4)">
-          <rect x="0" y="-11" rx="7" ry="7" width="64" height="22" fill="#14141c" stroke="rgba(212,168,83,.4)"/>
-          <text x="32" y="4.5" text-anchor="middle" font-family="Tajawal,sans-serif" font-size="13" font-weight="800" fill="#f0d78c">المراجعة</text>
-        </g>
-      </g>
-      <!-- milestone 4 — اختيار وظيفتك -->
-      <g class="ms" transform="translate(268,126)">
-        <circle r="12.5" fill="#d4a853" opacity=".22"/>
-        <circle r="8" fill="#d4a853"/>
-        <path d="M -3.4 0.2 L -1.2 2.4 L 3.8 -3" stroke="#171204" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <g transform="translate(-14,4)">
-          <rect x="-98" y="-11" rx="7" ry="7" width="98" height="22" fill="#14141c" stroke="rgba(212,168,83,.4)"/>
-          <text x="-49" y="4.5" text-anchor="middle" font-family="Tajawal,sans-serif" font-size="13" font-weight="800" fill="#f0d78c">اختيار وظيفتك</text>
-        </g>
-      </g>
-      <!-- milestone 5 — أول يوم شغل (finish flag) -->
-      <g class="ms" transform="translate(390,46)">
-        <circle r="13.5" fill="#f0d78c" opacity=".3"/>
-        <circle r="8.5" fill="url(#goldg)" stroke="#fff3c4" stroke-width="1.4"/>
-        <path d="M -2.4 -3.2 L -2.4 3 M -2.4 -3.2 L 4.6 -1.6 L -2.4 0.2" stroke="#171204" stroke-width="1.35" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <g transform="translate(-16,2)">
-          <rect x="-88" y="-11" rx="7" ry="7" width="88" height="22" fill="#181712" stroke="#f0d78c" stroke-width="1.2"/>
-          <text x="-44" y="4.5" text-anchor="middle" font-family="Tajawal,sans-serif" font-size="13" font-weight="800" fill="#fbeec3">أول يوم شغل</text>
-        </g>
-      </g>
-    </svg>
-    <div class="road-caption">
-      <b>من أول خطوة لحد أول يوم شغل</b>
-      <span>رحلة وَظِيف معاك خطوة خطوة — مجانًا ومن غير أي رسوم</span>
+<div class="stage" id="stage">
+      <div class="glow-center"></div>
+      <div class="ring"></div>
+      <div class="float" id="float">
+        <div class="jcard c1" data-depth="26">
+          <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 14v-2a9 9 0 0 1 18 0v2"/><path d="M21 15a2 2 0 0 1-2 2h-1a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h3zM3 15a2 2 0 0 0 2 2h1a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1H3z"/></svg></div>
+          <h4>كول سنتر</h4>
+          <div class="co">شركة اتصالات — القاهرة</div>
+          <div class="tags"><span class="tag">خريجين جدد</span><span class="tag">تدريب متوفر</span></div>
+        </div>
+        <div class="jcard c2" data-depth="46">
+          <div class="ico"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>
+          <h4>مندوب مبيعات</h4>
+          <div class="co">شركة تجزئة — الجيزة</div>
+          <div class="tags"><span class="tag">خبرة سنتين</span><span class="tag">عمولات</span></div>
+        </div>
+        <div class="jcard c3" data-depth="18">
+          <div class="ico"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+          <h4>مطور واجهات</h4>
+          <div class="co">شركة تقنية — عن بعد</div>
+          <div class="tags"><span class="tag">CV مطلوب</span><span class="tag">مرن</span></div>
+        </div>
+        <div class="jcard c4" data-depth="60">
+          <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div>
+          <h4>جودة ومراجعة</h4>
+          <div class="co">مركز خدمة عملاء</div>
+          <div class="tags"><span class="tag">دوام كامل</span></div>
+        </div>
+      </div>
     </div>
   </div>
-  </div>
-  <div class="scroll-hint">اكتشف
+      <div class="scroll-hint">اكتشف
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
   </div>
 </section>
@@ -812,7 +753,17 @@ var cio = new IntersectionObserver(function(es){
 },{threshold:.6});
 document.querySelectorAll('[data-count]').forEach(function(el){ cio.observe(el); });
 
-/* ====== hero scene (road trip) — no pointer parallax needed ====== */
+/* ====== hero 3D parallax ====== */
+var stage = document.getElementById('stage'), float = document.getElementById('float');
+if(stage && matchMedia('(pointer:fine)').matches){
+  stage.addEventListener('mousemove', function(e){
+    var r = stage.getBoundingClientRect();
+    var x = (e.clientX - r.left) / r.width - .5;
+    var y = (e.clientY - r.top) / r.height - .5;
+    float.style.transform = 'rotateY(' + (x * 14) + 'deg) rotateX(' + (-y * 12) + 'deg)';
+  });
+  stage.addEventListener('mouseleave', function(){ float.style.transform = 'rotateY(0) rotateX(0)'; });
+}
 
 /* ====== category card 3D tilt + glow follows cursor ====== */
 document.querySelectorAll('.cat').forEach(function(c){
